@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class RPFloatingPlaceholderTextView;
+
 @interface ViewController : UIViewController
+
+@property (nonatomic, weak) IBOutlet RPFloatingPlaceholderTextView *flTextView;
 
 @end

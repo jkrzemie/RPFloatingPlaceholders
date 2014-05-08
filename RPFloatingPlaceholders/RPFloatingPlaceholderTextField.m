@@ -50,6 +50,20 @@
     return self;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        // Setup the view defaults
+        [self setupViewDefaults];
+        [self setupDefaultColorStates];
+    }
+    
+    return self;
+}
+
 #pragma mark - Nib/Storyboard Initializers
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -73,13 +87,6 @@
     // when loaded from a nib/storyboard.
     self.placeholder = self.placeholder;
     self.text = self.text;
-}
-
-#pragma mark - Unsupported Initializers
-
-- (instancetype)init {
-    [NSException raise:NSInvalidArgumentException format:@"%s Using the %@ initializer directly is not supported. Use %@ instead.", __PRETTY_FUNCTION__, NSStringFromSelector(@selector(init)), NSStringFromSelector(@selector(initWithFrame:))];
-    return nil;
 }
 
 #pragma mark - Dealloc
@@ -143,8 +150,11 @@
     
     // Adjust the top margin of the text field and then cache the original
     // view frame
-    self.originalTextFieldFrame = UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(5.f, 0.f, 2.f, 0.f));
-    self.frame = self.originalTextFieldFrame;
+    if(!CGRectEqualToRect(self.frame, CGRectZero))
+    {
+        self.originalTextFieldFrame = UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(5.f, 0.f, 2.f, 0.f));
+        self.frame = self.originalTextFieldFrame;
+    }
     
     // Set the background to a clear color
     self.backgroundColor = [UIColor clearColor];
@@ -166,6 +176,18 @@
 }
 
 #pragma mark - Drawing & Animations
+
+-(void)adjustFrames
+{
+    // already set
+    if(!CGRectEqualToRect(self.originalTextFieldFrame, CGRectZero))
+        return;
+    
+    self.originalTextFieldFrame = UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(5.f, 0.f, 2.f, 0.f));
+    self.frame = self.originalTextFieldFrame;
+    
+    [self adjustFramesForNewPlaceholder];
+}
 
 - (void)layoutSubviews
 {

@@ -45,4 +45,6 @@
  */
 @property (nonatomic, strong) UIColor *floatingLabelInactiveTextColor;
 
+-(void)adjustFrames;
+
 @end

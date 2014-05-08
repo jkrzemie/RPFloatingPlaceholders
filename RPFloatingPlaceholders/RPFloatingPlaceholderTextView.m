@@ -56,6 +56,20 @@
     return self;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        // Setup the view defaults
+        [self setupViewDefaults];
+        [self setupDefaultColorStates];
+    }
+    
+    return self;
+}
+
 #pragma mark - Nib/Storyboard Initializers
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -87,13 +101,6 @@
     // when loaded from a nib/storyboard.
     self.placeholder = self.placeholder;
     self.text = self.text;
-}
-
-#pragma mark - Unsupported Initializers
-
-- (instancetype)init {
-    [NSException raise:NSInvalidArgumentException format:@"%s Using the %@ initializer directly is not supported. Use %@ instead.", __PRETTY_FUNCTION__, NSStringFromSelector(@selector(init)), NSStringFromSelector(@selector(initWithFrame:))];
-    return nil;
 }
 
 #pragma mark - Dealloc
@@ -185,6 +192,16 @@
 }
 
 #pragma mark - Drawing & Animations
+
+-(void)adjustFrames
+{
+    // already set
+    if(!CGRectEqualToRect(self.originalTextViewFrame, CGRectZero))
+        return;
+    
+    self.originalTextViewFrame = self.frame;
+    [self adjustFramesForNewPlaceholder];
+}
 
 - (void)layoutSubviews
 {

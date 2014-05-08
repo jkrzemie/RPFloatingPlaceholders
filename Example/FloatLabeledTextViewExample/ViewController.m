@@ -10,6 +10,13 @@
 #import "RPFloatingPlaceholderTextField.h"
 #import "RPFloatingPlaceholderTextView.h"
 
+@interface ViewController ()
+
+@property (nonatomic, strong) RPFloatingPlaceholderTextView *flAlTextView;
+@property (nonatomic, strong) RPFloatingPlaceholderTextField *flAlTextField;
+
+@end
+
 @implementation ViewController
 
 - (void)viewDidLoad
@@ -40,6 +47,42 @@
     //flTextView.text = @"I love lamp.  This is pre-existing text."; // You can set text after it's been initialized
     [self.view addSubview:flTextView];
      */
+    
+    _flAlTextField = [[RPFloatingPlaceholderTextField alloc] init];
+    _flAlTextField.floatingLabelActiveTextColor = [UIColor blueColor];
+    _flAlTextField.floatingLabelInactiveTextColor = [UIColor grayColor];
+    _flAlTextField.placeholder = @"This text field is layed out with VFL";
+    _flAlTextField.font = [UIFont fontWithName:@"Helvetica" size:16.f];
+    _flAlTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:_flAlTextField];
+    
+    _flAlTextView = [[RPFloatingPlaceholderTextView alloc] init];
+    _flAlTextView.floatingLabelActiveTextColor = [UIColor blueColor];
+    _flAlTextView.floatingLabelInactiveTextColor = [UIColor grayColor];
+    _flAlTextView.placeholder = @"This text view is layed out with VFL";
+    _flAlTextView.font = [UIFont fontWithName:@"Helvetica" size:16.f];
+    _flAlTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:_flAlTextView];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_flAlTextField]-|"
+                                                                      options:0 metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_flAlTextField)]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_flAlTextView]-|"
+                                                                      options:0 metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_flAlTextView)]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_flTextView]-20-[_flAlTextField(==40)]-20-[_flAlTextView(==40)]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_flTextView,_flAlTextView,_flAlTextField)]];
+    
+}
+
+-(void)viewDidLayoutSubviews
+{
+    [_flAlTextField adjustFrames];
+    [_flAlTextView adjustFrames];
 }
 
 - (IBAction)dismissKeyboard:(id)sender
