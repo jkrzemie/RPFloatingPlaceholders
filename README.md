@@ -1,3 +1,7 @@
+This fork allows to use RPFloatingPlaceholders with Auto Layout when it is set in code. 
+The example uses Auto Layout Visual Format for setup. 
+The only thing that needs to be done is to call the adjustFrames in -(void)viewDidLayoutSubviews (check example).
+
 ## RPFloatingPlaceholders
 
 UITextField and UITextView subclasses with placeholders that change into floating labels when the fields are populated with text.  
