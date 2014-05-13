@@ -25,6 +25,8 @@
 @property (nonatomic, assign) CGRect originalFloatingLabelFrame;
 @property (nonatomic, assign) CGRect offsetFloatingLabelFrame;
 
+@property (nonatomic, assign) BOOL isAnimating;
+
 // Make readwrite
 @property (nonatomic, strong, readwrite) UILabel *floatingLabel;
 
@@ -195,10 +197,6 @@
 
 -(void)adjustFrames
 {
-    // already set
-    if(!CGRectEqualToRect(self.originalTextViewFrame, CGRectZero))
-        return;
-    
     self.originalTextViewFrame = self.frame;
     [self adjustFramesForNewPlaceholder];
 }
@@ -251,6 +249,7 @@
     [self setNeedsDisplay];
     
     if (isAnimated) {
+        _isAnimating = YES;
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut;
         [UIView animateWithDuration:0.2f delay:0.f options:options animations:^{
             self.floatingLabel.alpha = 1.f;
@@ -259,7 +258,9 @@
             } else {
                 self.floatingLabel.frame = self.offsetFloatingLabelFrame;
             }
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            _isAnimating = NO;
+        }];
     } else {
         self.floatingLabel.alpha = 1.f;
         if (self.animationDirection == RPFloatingPlaceholderAnimateDownward) {
@@ -272,6 +273,7 @@
 
 - (void)hideFloatingLabel
 {
+    _isAnimating = YES;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseIn;
     [UIView animateWithDuration:0.2f delay:0.f options:options animations:^{
         self.floatingLabel.alpha = 0.f;
@@ -282,6 +284,7 @@
         }
     } completion:^(BOOL finished) {
         // Flags the view to redraw
+        _isAnimating = NO;
         [self setNeedsDisplay];
     }];
 }
@@ -303,14 +306,16 @@
     CGFloat offset = self.floatingLabel.font.lineHeight;
     
     self.originalFloatingLabelFrame = CGRectMake(self.originalTextViewFrame.origin.x + 5.f, self.originalTextViewFrame.origin.y,
-                                                 self.originalTextViewFrame.size.width - 10.f, self.floatingLabel.frame.size.height);
-    self.floatingLabel.frame = self.originalFloatingLabelFrame;
+                                                 self.floatingLabel.frame.size.width, self.floatingLabel.frame.size.height);
     
     self.offsetFloatingLabelFrame = CGRectMake(self.originalFloatingLabelFrame.origin.x, self.originalFloatingLabelFrame.origin.y - offset,
                                            self.originalFloatingLabelFrame.size.width, self.originalFloatingLabelFrame.size.height);
     
     self.offsetTextViewFrame = CGRectMake(self.originalTextViewFrame.origin.x, self.originalTextViewFrame.origin.y + offset,
                                       self.originalTextViewFrame.size.width, self.originalTextViewFrame.size.height - offset);
+    
+    if(!_isAnimating)
+        self.floatingLabel.frame = self.shouldDrawPlaceholder ? self.originalFloatingLabelFrame : self.offsetFloatingLabelFrame;
 }
 
 - (void)animateFloatingLabelColorChangeWithAnimationBlock:(void (^)(void))animationBlock
@@ -325,6 +330,8 @@
 
 - (void)textViewDidBeginEditing:(NSNotification *)notification
 {
+    [self adjustFrames];
+    
     __weak typeof(self) weakSelf = self;
     [self animateFloatingLabelColorChangeWithAnimationBlock:^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -334,6 +341,8 @@
 
 - (void)textViewDidEndEditing:(NSNotification *)notification
 {
+    [self adjustFrames];
+    
     __weak typeof(self) weakSelf = self;
     [self animateFloatingLabelColorChangeWithAnimationBlock:^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -343,6 +352,8 @@
 
 - (void)textViewTextDidChange:(NSNotification *)notification
 {
+    [self adjustFrames];
+    
     BOOL previousShouldDrawPlaceholderValue = self.shouldDrawPlaceholder;
     self.shouldDrawPlaceholder = !self.hasText;
     
