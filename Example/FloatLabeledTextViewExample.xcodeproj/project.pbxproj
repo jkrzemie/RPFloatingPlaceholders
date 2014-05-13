@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4827062219224C22003A9B9D /* DynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4827062119224C21003A9B9D /* DynamicViewController.m */; };
 		D430EE631816CE490059015E /* RPFloatingPlaceholderTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D430EE601816CE490059015E /* RPFloatingPlaceholderTextField.m */; };
 		D430EE641816CE490059015E /* RPFloatingPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D430EE621816CE490059015E /* RPFloatingPlaceholderTextView.m */; };
 		D4F239B11813869E00DBABA1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F239B01813869E00DBABA1 /* Foundation.framework */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4827062019224C21003A9B9D /* DynamicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicViewController.h; sourceTree = "<group>"; };
+		4827062119224C21003A9B9D /* DynamicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicViewController.m; sourceTree = "<group>"; };
 		D430EE5F1816CE490059015E /* RPFloatingPlaceholderTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPFloatingPlaceholderTextField.h; sourceTree = "<group>"; };
 		D430EE601816CE490059015E /* RPFloatingPlaceholderTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPFloatingPlaceholderTextField.m; sourceTree = "<group>"; };
 		D430EE611816CE490059015E /* RPFloatingPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPFloatingPlaceholderTextView.h; sourceTree = "<group>"; };
@@ -132,6 +135,8 @@
 				D4F239C21813869E00DBABA1 /* Main_iPhone.storyboard */,
 				D4F239C81813869E00DBABA1 /* ViewController.h */,
 				D4F239C91813869E00DBABA1 /* ViewController.m */,
+				4827062019224C21003A9B9D /* DynamicViewController.h */,
+				4827062119224C21003A9B9D /* DynamicViewController.m */,
 				D4F239CB1813869E00DBABA1 /* Images.xcassets */,
 				D4F239B71813869E00DBABA1 /* Supporting Files */,
 			);
@@ -245,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4827062219224C22003A9B9D /* DynamicViewController.m in Sources */,
 				D430EE631816CE490059015E /* RPFloatingPlaceholderTextField.m in Sources */,
 				D4F239CA1813869E00DBABA1 /* ViewController.m in Sources */,
 				D4F239C11813869E00DBABA1 /* AppDelegate.m in Sources */,
